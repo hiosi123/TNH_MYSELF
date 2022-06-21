@@ -5,7 +5,7 @@ export default function SingupStatePage() {
   const [userid, setUserid] = useState('')
   const [password1, setPassword1] = useState('')
   const [password2, setPassword2] = useState('')
-  const [emailError, setEmailError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
 
   function onChangeUserid(event){
     //event 는 변경 사항에 대한 내용 => 
@@ -25,7 +25,7 @@ export default function SingupStatePage() {
   function onClickSignup(event){
     
     if(password1 !== password2){
-      setEmailError('비밀번호가 일치하지 않습니다.')
+      setPasswordError('비밀번호가 일치하지 않습니다.')
     } else{
       alert('회원가입을 축하합니다.')
     }

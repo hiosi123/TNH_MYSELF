@@ -25,10 +25,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/singup": [
+    "/boards/new": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/singup.js"
+      "static/chunks/pages/boards/new.js"
     ]
   },
   "ampFirstPages": []
