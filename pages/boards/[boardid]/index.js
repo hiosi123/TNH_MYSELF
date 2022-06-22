@@ -31,28 +31,29 @@ export default function StaticRoutedPage(){
     const { data } = useQuery(FETCH_BOARD, {
         variables: {boardid: Number(router.query.boardid)}
     }) 
+
     console.log(data)
     //optional chaining, 데이터가 있으면 보여줘
     return (
         <Wrapper>
-        <Title> 게시판 </Title> 
-        <InputWrapper>
-            <Label>제목</Label>
-            <div>{data?.fetchBoard.title}</div>
-        </InputWrapper>
-        <InputWrapper>
-            <Label>내용</Label>
-            <div>{data?.fetchBoard.content}</div>
-        </InputWrapper>
-        <ImageWrapper>
-        <Label>파일 첨부</Label>
-            <UploadButton>+</UploadButton>
-            <UploadButton>+</UploadButton>
-            <UploadButton>+</UploadButton>
-        </ImageWrapper>
-        <ButtonWrapper>
-            <SubmitButton>수정하기</SubmitButton>
-        </ButtonWrapper>
+            <Title> 게시판 </Title> 
+            <InputWrapper>
+                <Label>제목</Label>
+                <div>{data?.fetchBoard.title}</div>
+            </InputWrapper>
+            <InputWrapper>
+                <Label>내용</Label>
+                <div>{data?.fetchBoard.content}</div>
+            </InputWrapper>
+            <ImageWrapper>
+            <Label>파일 첨부</Label>
+                <UploadButton>+</UploadButton>
+                <UploadButton>+</UploadButton>
+                <UploadButton>+</UploadButton>
+            </ImageWrapper>
+            <ButtonWrapper>
+                <SubmitButton>수정하기</SubmitButton>
+            </ButtonWrapper>
         </Wrapper>            
     )
 }
