@@ -25,6 +25,11 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
+    "/boards/[boardid]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/boards/[boardid].js"
+    ],
     "/boards/new": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",

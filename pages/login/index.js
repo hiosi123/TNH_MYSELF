@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
 
-export default function AAAPage() {
+export default function LoginPage() {
     // 여기는 자바스크립트 쓰는곳 
     //Mytitle 의 첫자는 대문자
   const MyTitle = styled.div` 

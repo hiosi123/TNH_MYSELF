@@ -12,13 +12,31 @@ import {
   Error,
 } from '../../../styles/emotion'
 import {useState} from 'react'
+import { useMutation, gql} from '@apollo/client'
+import { useRouter } from 'next/router'
 
-export default function AAAPage() {
+const CREATE_BOARD = gql`
+    mutation createBoard($title: String!, $content: String!, $url: String) {
+        createBoard(title: $title, content: $content, url: $url){
+            id
+            title
+            content
+            viewcount
+        }
+    }
+`
+
+
+export default function BoardPage() {
+  const router = useRouter()
+
+  const [createBoard] = useMutation(CREATE_BOARD)
   const [title, setTitle] = useState('')
-  const [contents, setContents] = useState('')
+  const [content, setContents] = useState('')
 
   const[titleError, setTitleError] = useState('')
   const[contentsError, setContentsError] = useState('')
+
 
   const onChangeTitle = (event) => {
     setTitle(event.target.value)
@@ -27,6 +45,7 @@ export default function AAAPage() {
       setTitleError('');
     }
   }
+
   const onChangeContents = (event) => {
     setContents(event.target.value)
 
@@ -35,16 +54,29 @@ export default function AAAPage() {
     }
   }
 
-  const onClickSubmit = () => {
+  const onClickSubmit = async () => {
     if(title === ''){
       setTitleError('제목을 입력해주세요')
     }
-    if(contents === ''){
+    if(content === ''){
       setContentsError('내용을 입력해주세요')
     }
-    if(title !== '' && contents !==''){
-      alert('게시물 등록에 성공하였습니다!')
+    if(title !== '' && content !==''){
+      try{
+        const result = await createBoard({
+          variables: {title: title, content: content}
+        })
+        console.log(result)
+        alert('게시물 등록에 성공하였습니다!')
+        //이동
+        router.push(`/boards/${result.data.createBoard.id}`)
+      } catch(error) {
+        console.log(error.message)
+      }
     }
+    
+
+
   }
 
   return (
