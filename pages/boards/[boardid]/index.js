@@ -32,6 +32,10 @@ export default function StaticRoutedPage(){
         variables: {boardid: Number(router.query.boardid)}
     }) 
 
+    const onClickUpdate = () => {
+        router.push(`/boards/${router.query.boardid}/update`)
+    }
+
     console.log(data)
     //optional chaining, 데이터가 있으면 보여줘
     return (
@@ -52,7 +56,7 @@ export default function StaticRoutedPage(){
                 <UploadButton>+</UploadButton>
             </ImageWrapper>
             <ButtonWrapper>
-                <SubmitButton>수정하기</SubmitButton>
+                <SubmitButton onClick={onClickUpdate}>수정하기</SubmitButton>
             </ButtonWrapper>
         </Wrapper>            
     )

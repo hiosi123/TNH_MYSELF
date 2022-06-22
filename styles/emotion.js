@@ -17,6 +17,7 @@ width: 500px;
 height: 800px;
 `;
 
+
 export const WriterWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -93,4 +94,78 @@ export const SubmitButton = styled.button`
 export const ImageWrapper = styled.div`
   width: 996px;
   padding-top: 40px;
+`
+
+
+export const TableTop = styled.div`
+  border-top: 2px solid gray;
+  margin-top: 20px;
+`;
+
+export const TableBottom = styled.div`
+  border-bottom: 2px solid gray;
+`;
+
+export const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  height: 52px;
+  line-height: 52px;
+  border-bottom: 1px solid gray;
+
+  :hover {
+    color: blue;
+  }
+`;
+
+export const ColumnHeaderBasic = styled.div`
+  width: 10%;
+  text-align: center;
+`;
+
+export const ColumnHeaderTitle = styled.div`
+  width: 70%;
+  text-align: center;
+`;
+
+export const ColumnBasic = styled.div`
+  width: 10%;
+  text-align: center;
+`;
+
+export const ColumnTitle = styled.div`
+  width: 70%;
+  text-align: center;
+  cursor: pointer;
+
+  :hover {
+    color: blue;
+  }
+`;
+
+export const Footer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 50px;
+`;
+
+export const Button = styled.button`
+  width: 171px;
+  height: 52px;
+  background-color: white;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  cursor: pointer;
+
+  :hover {
+    background-color: #f5f2fc;
+  }
+`;
+
+export const Column = styled.div`
+    width: 20%;
 `

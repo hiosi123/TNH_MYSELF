@@ -30,10 +30,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/boards/[boardid].js"
     ],
-    "/boards/new": [
+    "/boards/[boardid]/update": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/boards/new.js"
+      "static/chunks/pages/boards/[boardid]/update.js"
     ]
   },
   "ampFirstPages": []
