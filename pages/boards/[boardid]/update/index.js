@@ -13,7 +13,7 @@ import {
 } from '../../../../styles/emotion'
 import {useRouter} from 'next/router'
 import { useMutation, gql, useQuery} from '@apollo/client'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 
 
 const UPDATE_BOARD = gql`
@@ -46,6 +46,13 @@ export default function BoardEditPage() {
   const [title, setTitle] = useState('')
   const [content, setContents] = useState('')
 
+  useEffect(() => {
+    if(!localStorage.getItem("accessToken")) {
+      alert("로그인 후 이용 가능합니다!!")
+      router.push('/login')
+    }
+  },[])
+
   const { data } = useQuery(FETCH_BOARD, {
     variables: {boardid: Number(router.query.boardid)}
   }) 
@@ -67,7 +74,8 @@ export default function BoardEditPage() {
       //이동
       router.push(`/boards/${router.query.boardid}`)
     } catch (error) {
-      alert(error.message)
+      alert('수정할 권한이 없습니다.')
+      router.push('/boards')
     }
     
   }

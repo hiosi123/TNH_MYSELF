@@ -19,6 +19,9 @@ const FETCH_BOARD = gql`
             title
             content
             url
+            user {
+                userid
+            }
 
         }
     }
@@ -36,11 +39,19 @@ export default function StaticRoutedPage(){
         router.push(`/boards/${router.query.boardid}/update`)
     }
 
+    const onClickBoardList = () => {
+        router.push(`/boards`)
+    }
+
     console.log(data)
     //optional chaining, 데이터가 있으면 보여줘
     return (
         <Wrapper>
             <Title> 게시판 </Title> 
+            <InputWrapper>
+                <Label>게시자</Label>
+                <div>{data?.fetchBoard.user.userid}</div>
+            </InputWrapper>
             <InputWrapper>
                 <Label>제목</Label>
                 <div>{data?.fetchBoard.title}</div>
@@ -57,6 +68,7 @@ export default function StaticRoutedPage(){
             </ImageWrapper>
             <ButtonWrapper>
                 <SubmitButton onClick={onClickUpdate}>수정하기</SubmitButton>
+                <SubmitButton onClick={onClickBoardList}>목록</SubmitButton>
             </ButtonWrapper>
         </Wrapper>            
     )

@@ -1,17 +1,17 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import ApolloSetting from '../src/components/commons/apollo'
+import { RecoilRoot } from "recoil";
+
 
 function MyApp({Component, pageProps }) {
     //모든 셋팅
-    const client = new ApolloClient({
-        uri: "http://localhost:3001/graphql",
-        cache: new InMemoryCache()
-    })
 
     return (
-        <ApolloProvider client={client}>
-            <Component {...pageProps}/>
-        </ApolloProvider>
-    )
+        <RecoilRoot>
+            <ApolloSetting>
+                <Component {...pageProps}/>
+            </ApolloSetting>
+        </RecoilRoot>
+    )   
 }
 
 export default MyApp

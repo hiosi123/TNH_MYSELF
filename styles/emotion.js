@@ -77,7 +77,8 @@ export const ButtonWrapper = styled.div`
    display: flex;
    flex-direction: row;
    justify-content: center;
-   padding-top: 80px;
+   padding-top: 80px; 
+
 `;
 
 export const SubmitButton = styled.button`
@@ -89,6 +90,7 @@ export const SubmitButton = styled.button`
   margin-left: 12px;
   margin-right: 12px;
   cursor: pointer;
+  border: 3px solid #bdbdbd;
 `;
 
 export const ImageWrapper = styled.div`
@@ -168,4 +170,9 @@ export const Button = styled.button`
 
 export const Column = styled.div`
     width: 20%;
+`
+
+export const Page = styled.div`
+  cursor: pointer;
+
 `

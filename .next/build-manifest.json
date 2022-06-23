@@ -25,15 +25,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/boards/[boardid]": [
+    "/boards": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/boards/[boardid].js"
+      "static/chunks/pages/boards.js"
     ],
-    "/boards/[boardid]/update": [
+    "/login": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/boards/[boardid]/update.js"
+      "static/chunks/pages/login.js"
     ]
   },
   "ampFirstPages": []
