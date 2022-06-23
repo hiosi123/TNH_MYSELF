@@ -28,9 +28,9 @@
     "react-infinite-scroller": "^1.2.5",
     "react-player": "^2.10.0",
     "react-slick": "^0.28.1",
+    "recoil": "^0.7.0",
     "slick-carousel": "^1.8.1",
-    "uuid": "^8.3.2",
-    "recoil": "^0.7.0"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/apollo-upload-client": "^17.0.0",

@@ -47,7 +47,6 @@ export default function StaticRoutedPage(){
     //optional chaining, 데이터가 있으면 보여줘
     return (
         <Wrapper>
-            <Title> 게시판 </Title> 
             <InputWrapper>
                 <Label>게시자</Label>
                 <div>{data?.fetchBoard.user.userid}</div>
@@ -62,9 +61,8 @@ export default function StaticRoutedPage(){
             </InputWrapper>
             <ImageWrapper>
             <Label>파일 첨부</Label>
-                <UploadButton>+</UploadButton>
-                <UploadButton>+</UploadButton>
-                <UploadButton>+</UploadButton>
+                <div>{data?.fetchBoard.url}</div>
+                <img src={data?.fetchBoard.url}/>
             </ImageWrapper>
             <ButtonWrapper>
                 <SubmitButton onClick={onClickUpdate}>수정하기</SubmitButton>

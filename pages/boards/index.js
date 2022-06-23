@@ -2,6 +2,7 @@ import { useMutation, gql, useQuery } from "@apollo/client"
 import {useRouter} from 'next/router'
 import styled from '@emotion/styled'
 import {
+  Title,
   TableTop, 
   Wrapper,
   ColumnHeaderBasic,
@@ -43,6 +44,11 @@ const FETCH_BOARDS_COUNT = gql`
   }
 `;
 
+const LOGOUT = gql`
+mutation logout{
+  logout
+}
+`
 
 
 export default function BoardLists() {
@@ -52,6 +58,7 @@ export default function BoardLists() {
   const { data: dataBoardsCount } = useQuery(FETCH_BOARDS_COUNT)
   const lastPage = Math.ceil(dataBoardsCount?.fetchBoardsCount / 10);
   const [deleteBoard] = useMutation(DELETE_BOARD)
+  const [logout] = useMutation(LOGOUT)
   
 
 
@@ -92,11 +99,21 @@ export default function BoardLists() {
     refetch({ page: startPage + 10 });
   };
 
+  const onClickLogout = async (event) => {
+    try{
+      await logout()
+      router.push('/login')
+    } catch(error) {
+      console.log(error)
+    }
+    
+  }
 
 
   
   return(
     <Wrapper>
+      <Title>게시글 페이지</Title> 
       <TableTop/>
       <Row>
         <ColumnHeaderBasic><input type="checkbox" /></ColumnHeaderBasic>
@@ -144,6 +161,9 @@ export default function BoardLists() {
           등록
         </Button>
       </Footer>
+        <Button onClick={onClickLogout}>
+          로그아웃
+        </Button>
     </Wrapper>
   )
 }

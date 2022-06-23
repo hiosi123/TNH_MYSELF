@@ -4,8 +4,9 @@ import { useRecoilState } from 'recoil'
 import { createUploadLink } from "apollo-upload-client";
 import { useEffect } from "react";
 
+
 export default function ApolloSetting(props) {
-    const [accessToken, setAccessToken] = useRecoilState(accessTokenState)
+    const [accessToken,setAccessToken] = useRecoilState(accessTokenState)
 
     // if(typeof window !== "undefined") {
     //     console.log('여기는 브라우저다!')
@@ -21,6 +22,7 @@ export default function ApolloSetting(props) {
     const uploadLink = createUploadLink({
         uri: "http://localhost:3001/graphql",
         headers: {Authorization: `Bearer ${accessToken}`},
+        credentials: 'include',
     })
 
     const client = new ApolloClient({

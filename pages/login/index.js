@@ -1,6 +1,10 @@
 import styled from '@emotion/styled'
 import {
+  ButtonWrapper,
+  InputWrapper,
+  Title,
   Wrapper,
+  SubmitButton
 } from '../../styles/emotion'
 import { useState } from 'react'
 import { useMutation, gql} from '@apollo/client'
@@ -38,22 +42,33 @@ export default function LoginPage() {
         setAccessToken(accessToken)
         // 브라우저 로컬 스토리지에 저장하는데 별로 좋은 방법은 아님 (쿠키로 수정 요구)
         localStorage.setItem("accessToken",accessToken)
-        //
+  
         alert('로그인에 성공하였습니다.')
         router.push('/boards')
       } catch(error) {
         console.log(error.message)
       }
     }
+    
+    const onClickSingup = (evet) => {
+      router.push('/signupplz')
+    }
 
 
   return (
     <Wrapper>
-      아이디: <input type="text" onChange={onChangeUserid} />
-      <br />
-      비밀번호: <input type="password" onChange={onChangePassword} />
-      <br />
-      <button onClick={onClickLogin}>로그인하기</button>
+      <InputWrapper>
+      <Title> 아이디 </Title> 
+      <input style={{width:"200px", height: "30px"}} type="text" onChange={onChangeUserid} />
+      </InputWrapper>
+      <InputWrapper>
+      <Title> 비밀번호 </Title> 
+      <input style={{width:"200px", height: "30px"}} type="password" onChange={onChangePassword} />
+      </InputWrapper>
+      <InputWrapper>
+      <SubmitButton onClick={onClickLogin}>로그인</SubmitButton>
+      <SubmitButton onClick={onClickSingup}>회원가입</SubmitButton>
+      </InputWrapper>
     </Wrapper>
   )
 }

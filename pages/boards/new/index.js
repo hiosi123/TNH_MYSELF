@@ -14,6 +14,7 @@ import {
 import {useState} from 'react'
 import { useMutation, gql} from '@apollo/client'
 import { useRouter } from 'next/router'
+import { Modal } from 'antd'
 
 const CREATE_BOARD = gql`
     mutation createBoard($title: String!, $content: String!, $url: String) {
@@ -26,11 +27,20 @@ const CREATE_BOARD = gql`
     }
 `
 
+const UPLOAD_FILE = gql`
+  mutation uploadFile($files: [Upload!]!){
+    uploadFile(files: $files)
+  }
+`
+
 
 export default function BoardPage() {
   const router = useRouter()
 
   const [createBoard] = useMutation(CREATE_BOARD)
+  const [uploadFile] = useMutation(UPLOAD_FILE)
+
+  const [imageUrl, setImageUrl] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContents] = useState('')
 
@@ -64,7 +74,7 @@ export default function BoardPage() {
     if(title !== '' && content !==''){
       try{
         const result = await createBoard({
-          variables: {title: title, content: content}
+          variables: {title: title, content: content, url: imageUrl}
         })
         console.log(result)
         alert('게시물 등록에 성공하였습니다!')
@@ -74,9 +84,28 @@ export default function BoardPage() {
         console.log(error.message)
       }
     }
-    
 
+  }
+  const onChangeFile = async (event) => {
+    console.log(event)
+    const files = event.target.files[0]
+    console.log(files)
 
+    try{
+      const result = await uploadFile({
+        variables: {files : files}
+      })
+      console.log(result.data?.uploadFile[3])
+  
+      setImageUrl(result.data?.uploadFile[3])
+    }catch(error){
+      console.log(error)
+    }
+ 
+  }
+
+  const onClickRollback = (event) => {
+    router.push('/boards')
   }
 
   return (
@@ -94,12 +123,12 @@ export default function BoardPage() {
     </InputWrapper>
     <ImageWrapper>
       <Label>파일 첨부</Label>
-      <UploadButton>+</UploadButton>
-      <UploadButton>+</UploadButton>
-      <UploadButton>+</UploadButton>
+      <input type="file" onChange={onChangeFile}/>
+      <img src={imageUrl}/>
     </ImageWrapper>
     <ButtonWrapper>
       <SubmitButton onClick={onClickSubmit}>등록하기</SubmitButton>
+      <SubmitButton onClick={onClickRollback}>등록취소</SubmitButton>
     </ButtonWrapper>
     </Wrapper>
     

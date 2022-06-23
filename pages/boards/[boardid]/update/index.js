@@ -39,10 +39,18 @@ const FETCH_BOARD = gql`
     }
 `
 
+const UPLOAD_FILE = gql`
+  mutation uploadFile($files: [Upload!]!){
+    uploadFile(files: $files)
+  }
+`
+
 export default function BoardEditPage() {
   const router = useRouter()
 
+  const [uploadFile] = useMutation(UPLOAD_FILE)
   const [updateBoard] = useMutation(UPDATE_BOARD)
+  const [imageUrl, setImageUrl] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContents] = useState('')
 
@@ -64,20 +72,40 @@ export default function BoardEditPage() {
   const onChangeContents = (event) => {
     setContents(event.target.value)
   }
+  const onClickRollback = (event) => {
+    router.push(`/boards/${router.query.boardid}`)
+  }
 
   const onClickUpdate = async () => {
     try{
       const result = await updateBoard({
-        variables: {boardid: Number(router.query.boardid), title: title, content: content}
+        variables: {boardid: Number(router.query.boardid), title: title, content: content, url: imageUrl? imageUrl: "empty"}
       })
       alert('게시물 수정에 성공하였습니다!')
       //이동
       router.push(`/boards/${router.query.boardid}`)
     } catch (error) {
-      alert('수정할 권한이 없습니다.')
-      router.push('/boards')
+      console.log(error)
+      // router.push('/boards')
     }
     
+  }
+  const onChangeFile = async (event) => {
+    console.log(event)
+    const files = event.target.files[0]
+    console.log(files)
+
+    try{
+      const result = await uploadFile({
+        variables: {files : files}
+      })
+      console.log(result.data?.uploadFile[3])
+  
+      setImageUrl(result.data?.uploadFile[3])
+    }catch(error){
+      console.log(error)
+    }
+ 
   }
 
   return (
@@ -92,14 +120,17 @@ export default function BoardEditPage() {
         <Contents onChange={onChangeContents} defaultValue={data?.fetchBoard.content}/>
       </InputWrapper>
       <ImageWrapper>
-        <Label>파일 첨부</Label>
-        <UploadButton>+</UploadButton>
-        <UploadButton>+</UploadButton>
-        <UploadButton>+</UploadButton>
+        <Label>찾아보기</Label>
+        <input type="file" onChange={onChangeFile}/>
+        {/* <div>{imageUrl? imageUrl :data?.fetchBoard.url}</div> */}
+        <img style={{width:"500px", height: "300px"}} src={imageUrl? imageUrl:data?.fetchBoard.url}/>
       </ImageWrapper>
       <ButtonWrapper>
-        <SubmitButton onClick={onClickUpdate}>수정하기</SubmitButton>
+        <SubmitButton onClick={onClickUpdate}>수정완료</SubmitButton>
+        <SubmitButton onClick={onClickRollback}>수정취소</SubmitButton>
       </ButtonWrapper>
+
+
     </Wrapper>
   )
 }
