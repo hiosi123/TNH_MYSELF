@@ -79,7 +79,7 @@ export default function BoardEditPage() {
   const onClickUpdate = async () => {
     try{
       const result = await updateBoard({
-        variables: {boardid: Number(router.query.boardid), title: title, content: content, url: imageUrl? imageUrl: "empty"}
+        variables: {boardid: Number(router.query.boardid), title: title, content: content, url: imageUrl? imageUrl: data?.fetchBoard.url}
       })
       alert('게시물 수정에 성공하였습니다!')
       //이동

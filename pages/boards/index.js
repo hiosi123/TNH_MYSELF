@@ -9,7 +9,6 @@ import {
   ColumnHeaderTitle,
   Row,
   ColumnBasic,
-  Column,
   ColumnTitle,
   Button,
   Footer,
@@ -20,8 +19,8 @@ import { getDate } from "../../src/commons/libraries/utils"
 import { useState } from "react"
 
 const FETCH_BOARDS = gql`
-  query fetchBoards ($page: Float){
-    fetchBoards(page: $page){
+  query fetchBoards ($page: Float $search: String $userid: String){
+    fetchBoards(page: $page, search: $search, userid: $userid){
       id
       title
       createdAt
@@ -49,15 +48,30 @@ mutation logout{
   logout
 }
 `
+const DELETE_ALL =gql`
+  mutation deleteBoards($boardid: [Int!]!){
+    deleteBoards(boardid: $boardid)
+  }
+`
+
 
 
 export default function BoardLists() {
   const router = useRouter();
   const [startPage, setStartPage] = useState(1);
+  const [search, setSearch] = useState('')
+  const [cateogory, setCategory] = useState('')
+
+  const [isAllChecked, setIsAllChecked] = useState(false)
+  const [checkedItems, setCheckedItems] = useState([])
+
+ 
+
   const {data, refetch} = useQuery(FETCH_BOARDS)
   const { data: dataBoardsCount } = useQuery(FETCH_BOARDS_COUNT)
   const lastPage = Math.ceil(dataBoardsCount?.fetchBoardsCount / 10);
   const [deleteBoard] = useMutation(DELETE_BOARD)
+  const [deleteBoards] = useMutation(DELETE_ALL)
   const [logout] = useMutation(LOGOUT)
   
 
@@ -106,17 +120,74 @@ export default function BoardLists() {
     } catch(error) {
       console.log(error)
     }
-    
+
+  }
+  const onChangeSearch = (event) => {
+    setSearch(event.target.value)
   }
 
+  const onChangeType =  (event) => {
+    setCategory(event.target.value)
 
+  }
+    
+  const onClickSearch =  () => {
+    if(cateogory === 'title'){
+      refetch({search: search, page: 1})
+    } else if(cateogory === 'user'){
+      refetch({userid: search, page: 1})
+    }
   
+  }
+ 
+  
+
+  const onClickCheckBox = (event) => {
+    console.log(event.target.id)
+    const BNO = Number(event.target.id)
+
+    if(checkedItems.includes(BNO)){
+      setCheckedItems(checkedItems.filter((el) => el !== BNO))
+    } else {
+      setCheckedItems([...checkedItems, BNO])
+    }
+    console.log(checkedItems)
+  }
+
+  const onClickDeleteBoards = async () => {
+      try{
+        await deleteBoards({
+          variables: {boardid: checkedItems},
+          refetchQueries: [{query: FETCH_BOARDS}]
+        })
+        setIsAllChecked(!isAllChecked)
+      } catch(error) {
+        console.log(error)
+      } 
+  }
+
+  const onClickCheckAllBox = () => {
+    setIsAllChecked(!isAllChecked)
+    if(!isAllChecked){
+      const arr =data?.fetchBoards.map((e) => e.id)
+      setCheckedItems([...checkedItems, ...arr])
+    } else {
+      setCheckedItems([])
+    }
+    console.log(checkedItems)
+  }
+
   return(
     <Wrapper>
       <Title>게시글 페이지</Title> 
+        <select type='text' onChange={onChangeType}>
+          <option value='title'>title</option>
+          <option value='user'>user</option>
+        </select>
+        <input type='text' onChange={onChangeSearch}/><button onClick={onClickSearch} style={{}}>검색하기</button>
       <TableTop/>
       <Row>
-        <ColumnHeaderBasic><input type="checkbox" /></ColumnHeaderBasic>
+        <ColumnHeaderBasic><input id='allclick' checked={isAllChecked} type="checkbox" onChange={onClickCheckAllBox}/></ColumnHeaderBasic>
         <ColumnHeaderBasic>No</ColumnHeaderBasic>
         <ColumnHeaderTitle>제목</ColumnHeaderTitle>
         <ColumnHeaderBasic>게시자</ColumnHeaderBasic>
@@ -124,11 +195,13 @@ export default function BoardLists() {
         <ColumnHeaderBasic>조회수</ColumnHeaderBasic>
         <ColumnHeaderBasic>삭제</ColumnHeaderBasic>
       </Row>
+
+
       
       {data?.fetchBoards.map((el) => {
           return(
             <Row key={el.id}>
-            <ColumnBasic><input type="checkbox" /></ColumnBasic>
+            <ColumnBasic><input type="checkbox" checked={checkedItems.includes(el.id) ? true : false} id={el.id} onChange={onClickCheckBox}/></ColumnBasic>
             <ColumnBasic>{el.id}</ColumnBasic>
             <ColumnTitle id={el.id} onClick={onClickMoveToBoardDetail}>{el.title}</ColumnTitle>
             <ColumnBasic>{el.user.userid}</ColumnBasic>
@@ -157,13 +230,18 @@ export default function BoardLists() {
           )
       )}
       <Page onClick={onClickNextPage}>{`>`}</Page>  
+      </Footer>
+      <Footer>
         <Button onClick={onClickMoveToBoardNew}>
           등록
         </Button>
-      </Footer>
+        <Button onClick={onClickDeleteBoards}>
+          삭제
+        </Button>
         <Button onClick={onClickLogout}>
           로그아웃
         </Button>
+      </Footer>
     </Wrapper>
   )
 }
