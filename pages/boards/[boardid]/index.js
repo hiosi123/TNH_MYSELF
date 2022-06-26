@@ -1,6 +1,9 @@
 //동적 라우팅
 import { useQuery, gql } from '@apollo/client'
 import { useRouter } from 'next/router'
+import { useRecoilState } from 'recoil'
+import { useEffect } from "react";
+import jwt from 'jsonwebtoken'
 import {
     Title, 
     Wrapper,
@@ -11,6 +14,8 @@ import {
     SubmitButton,
     ButtonWrapper,
   } from '../../../styles/emotion'
+import { accessTokenState } from '../../../src/commons/store';
+import { getDate } from '../../../src/commons/libraries/utils';
 
 const FETCH_BOARD = gql`
     query fetchBoard($boardid: Float!){
@@ -18,6 +23,7 @@ const FETCH_BOARD = gql`
             id
             title
             content
+            createdAt
             url
             user {
                 userid
@@ -29,6 +35,13 @@ const FETCH_BOARD = gql`
 
 export default function StaticRoutedPage(){
     const router = useRouter()
+    const [accessToken, setAccessToken] = useRecoilState(accessTokenState)
+
+
+    useEffect(() => {
+        const mylocalstorageAccessToken = localStorage.getItem('accessToken')
+        setAccessToken(mylocalstorageAccessToken || "")
+    },[])
 
 
     const { data } = useQuery(FETCH_BOARD, {
@@ -36,7 +49,16 @@ export default function StaticRoutedPage(){
     }) 
 
     const onClickUpdate = () => {
-        router.push(`/boards/${router.query.boardid}/update`)
+        const checkAccessToken = jwt.verify(accessToken, 'myAccessKey');
+
+        try{
+            if(checkAccessToken.userid !== data?.fetchBoard.user.userid){
+                throw new Error('수정할 권한이 없습니다')
+            }
+            router.push(`/boards/${router.query.boardid}/update`)
+        } catch(error) {
+            alert(error)
+        }
     }
 
     const onClickBoardList = () => {
@@ -54,6 +76,10 @@ export default function StaticRoutedPage(){
             <InputWrapper>
                 <Label>제목</Label>
                 <div>{data?.fetchBoard.title}</div>
+            </InputWrapper>
+            <InputWrapper>
+                <Label>날짜</Label>
+                <div>{getDate(data?.fetchBoard.createdAt)}</div>
             </InputWrapper>
             <InputWrapper>
                 <Label>내용</Label>
