@@ -118,7 +118,7 @@ export default function BoardEditPage() {
       <ImageWrapper>
         <Label>찾아보기</Label>
         <input type="file" onChange={onChangeFile}/>
-        {/* <div>{imageUrl? imageUrl :data?.fetchBoard.url}</div> */}
+        <div>{imageUrl? imageUrl :data?.fetchBoard.url}</div>
         <img style={{width:"500px", height: "300px"}} src={imageUrl? imageUrl: 'url'}/>
       </ImageWrapper>
       <ButtonWrapper>
