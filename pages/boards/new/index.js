@@ -74,7 +74,7 @@ export default function BoardPage() {
     if(title !== '' && content !==''){
       try{
         const result = await createBoard({
-          variables: {title: title, content: content, url: imageUrl}
+          variables: {title: title, content: content, url: imageUrl? imageUrl: 'noFIle'}
         })
         console.log(result)
         alert('게시물 등록에 성공하였습니다!')
@@ -99,6 +99,9 @@ export default function BoardPage() {
   
       setImageUrl(result.data?.uploadFile[3])
     }catch(error){
+      if(error === 'Unauthorized'){
+        alert('로그인을 먼저 진행해주세요')
+      }
       console.log(error)
     }
  

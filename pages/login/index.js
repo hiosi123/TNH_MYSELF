@@ -41,7 +41,7 @@ export default function LoginPage() {
         const accessToken = result.data.login
         setAccessToken(accessToken)
         // 브라우저 로컬 스토리지에 저장하는데 별로 좋은 방법은 아님 (쿠키로 수정 요구)
-        localStorage.setItem("accessToken",accessToken)
+        // localStorage.setItem("accessToken",accessToken)
   
         alert('로그인에 성공하였습니다.')
         router.push('/boards')

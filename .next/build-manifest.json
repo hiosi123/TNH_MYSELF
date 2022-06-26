@@ -30,15 +30,20 @@
       "static/chunks/main.js",
       "static/chunks/pages/boards.js"
     ],
-    "/boards/new": [
+    "/boards/[boardid]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/boards/new.js"
+      "static/chunks/pages/boards/[boardid].js"
     ],
     "/login": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/login.js"
+    ],
+    "/signupplz": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/signupplz.js"
     ]
   },
   "ampFirstPages": []

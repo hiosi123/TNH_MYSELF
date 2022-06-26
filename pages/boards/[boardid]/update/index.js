@@ -14,6 +14,7 @@ import {
 import {useRouter} from 'next/router'
 import { useMutation, gql, useQuery} from '@apollo/client'
 import {useEffect, useState} from 'react'
+import { getAccessToken } from '../../../../src/commons/libraries/getAccessToken'
 
 
 const UPDATE_BOARD = gql`
@@ -54,12 +55,6 @@ export default function BoardEditPage() {
   const [title, setTitle] = useState('')
   const [content, setContents] = useState('')
 
-  useEffect(() => {
-    if(!localStorage.getItem("accessToken")) {
-      alert("로그인 후 이용 가능합니다!!")
-      router.push('/login')
-    }
-  },[])
 
   const { data } = useQuery(FETCH_BOARD, {
     variables: {boardid: Number(router.query.boardid)}
@@ -86,7 +81,8 @@ export default function BoardEditPage() {
       router.push(`/boards/${router.query.boardid}`)
     } catch (error) {
       console.log(error)
-      // router.push('/boards')
+      alert('수정할 권한이 없습니다.')
+      router.push('/boards')
     }
     
   }
@@ -123,7 +119,7 @@ export default function BoardEditPage() {
         <Label>찾아보기</Label>
         <input type="file" onChange={onChangeFile}/>
         {/* <div>{imageUrl? imageUrl :data?.fetchBoard.url}</div> */}
-        <img style={{width:"500px", height: "300px"}} src={imageUrl? imageUrl:data?.fetchBoard.url}/>
+        <img style={{width:"500px", height: "300px"}} src={imageUrl? imageUrl: 'url'}/>
       </ImageWrapper>
       <ButtonWrapper>
         <SubmitButton onClick={onClickUpdate}>수정완료</SubmitButton>

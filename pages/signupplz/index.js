@@ -44,10 +44,11 @@ export default function SingupStatePage() {
         const result = await createUser({
           variables: {createUserInput:{userid: userid, password: password1}}
         })
-        alert(`${result}님 회원가입을 축하합니다.`)
+        alert(`${result.data.createUser.userid}님 회원가입을 축하합니다.`)
         router.push('/login')
       }catch(error) {
         console.log(error)
+        alert('이미 등록된 아이디 입니다.')
       }
     }
   }

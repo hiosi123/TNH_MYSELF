@@ -16,6 +16,7 @@ import {
   } from '../../../styles/emotion'
 import { accessTokenState } from '../../../src/commons/store';
 import { getDate } from '../../../src/commons/libraries/utils';
+import { getAccessToken } from '../../../src/commons/libraries/getAccessToken';
 
 const FETCH_BOARD = gql`
     query fetchBoard($boardid: Float!){
@@ -39,8 +40,11 @@ export default function StaticRoutedPage(){
 
 
     useEffect(() => {
-        const mylocalstorageAccessToken = localStorage.getItem('accessToken')
-        setAccessToken(mylocalstorageAccessToken || "")
+        // const mylocalstorageAccessToken = localStorage.getItem('accessToken')
+        // setAccessToken(mylocalstorageAccessToken || "")
+        getAccessToken().then((newAccessToken) => {
+            setAccessToken(newAccessToken)
+        })
     },[])
 
 
@@ -49,12 +53,12 @@ export default function StaticRoutedPage(){
     }) 
 
     const onClickUpdate = () => {
-        const checkAccessToken = jwt.verify(accessToken, 'myAccessKey');
+        // const checkAccessToken = jwt.verify(accessToken, 'myAccessKey');
 
         try{
-            if(checkAccessToken.userid !== data?.fetchBoard.user.userid){
-                throw new Error('수정할 권한이 없습니다')
-            }
+            // if(checkAccessToken.userid !== data?.fetchBoard.user.userid){
+            //     throw new Error('수정할 권한이 없습니다')
+            // }
             router.push(`/boards/${router.query.boardid}/update`)
         } catch(error) {
             alert(error)

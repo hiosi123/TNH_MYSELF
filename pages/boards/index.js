@@ -163,6 +163,7 @@ export default function BoardLists() {
         setIsAllChecked(!isAllChecked)
       } catch(error) {
         console.log(error)
+        alert('삭제할 권한이 없습니다.')
       } 
   }
 
